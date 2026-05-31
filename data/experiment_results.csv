@@ -1,0 +1,6 @@
+user_id,session_id,variant,cta_impression,cta_click,form_start,conversion,device_category,traffic_source,event_date
+1001,S10001,control,1,0,0,0,desktop,organic,2025-05-01
+1002,S10002,control,1,1,1,0,mobile,paid,2025-05-01
+1003,S10003,variant_b,1,1,1,1,desktop,organic,2025-05-01
+1004,S10004,variant_b,1,1,1,1,mobile,paid,2025-05-01
+1005,S10005,control,1,1,0,0,desktop,direct,2025-05-01
