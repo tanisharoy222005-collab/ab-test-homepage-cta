@@ -1,45 +1,47 @@
 import pandas as pd
 
+print("=" * 50)
+print("DAILY DATA QUALITY VALIDATION")
+print("=" * 50)
+
 df = pd.read_csv("../data/experiment_results.csv")
 
-print("===== DAILY VALIDATION =====\n")
+# Missing Values
 
-# Missing values
+print("\n[1] Missing Values")
+
 missing = df.isnull().sum()
 
-print("Missing Values")
 print(missing)
 
-print("\n-----------------\n")
+# Duplicate Sessions
 
-# Duplicate sessions
+print("\n[2] Duplicate Sessions")
+
 duplicates = df["session_id"].duplicated().sum()
 
-print("Duplicate Sessions")
-print(duplicates)
+print(f"Duplicate Sessions: {duplicates}")
 
-print("\n-----------------\n")
+# Variant Allocation
 
-# Traffic allocation
+print("\n[3] Traffic Allocation")
+
 allocation = (
     df["variant"]
     .value_counts(normalize=True)
     * 100
 )
 
-print("Traffic Allocation (%)")
 print(allocation.round(2))
 
-print("\n-----------------\n")
+# Event Completeness
 
-# Conversion rates
-conversion_rates = (
-    df.groupby("variant")["conversion"]
-    .mean()
-    * 100
+print("\n[4] Conversion Tracking")
+
+conversion_count = df["conversion"].sum()
+
+print(
+    f"Total Conversions: {conversion_count}"
 )
 
-print("Conversion Rates (%)")
-print(conversion_rates.round(2))
-
-print("\nValidation Completed")
+print("\nValidation Complete")
