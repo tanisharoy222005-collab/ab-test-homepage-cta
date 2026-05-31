@@ -1,0 +1,69 @@
+name: Experiment Validation Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate-sql:
+    name: SQL Syntax Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install SQL linter (sqlfluff)
+        run: |
+          pip install sqlfluff
+
+      - name: Lint SQL files
+        run: |
+          sqlfluff lint sql/ --dialect postgres
+
+
+  run-notebooks:
+    name: Execute Jupyter Notebooks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install jupyter nbconvert pandas scipy numpy
+
+      - name: Execute notebooks
+        run: |
+          jupyter nbconvert --to notebook --execute analysis.ipynb --output executed_analysis.ipynb
+          jupyter nbconvert --to notebook --execute sample-size-calculation.ipynb --output executed_sample_size.ipynb
+
+
+  data-quality-check:
+    name: Data Quality Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas great_expectations
+
+      - name: Run validation script
+        run: |
+          python automation/daily-validation.py
