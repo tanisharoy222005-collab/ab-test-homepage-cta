@@ -1,0 +1,29 @@
+experiment_name: Homepage CTA Optimization
+
+thresholds:
+
+  traffic_split_deviation_pct: 5
+
+  minimum_daily_sessions: 500
+
+  conversion_rate_drop_pct: 15
+
+  lead_volume_drop_pct: 20
+
+notifications:
+
+  slack_channel: "#experimentation-alerts"
+
+  report_frequency: daily
+
+monitoring:
+
+  traffic_split: true
+
+  conversion_rate: true
+
+  lead_volume: true
+
+  duplicate_sessions: true
+
+  missing_values: true
